@@ -1,0 +1,164 @@
+body{
+    font-family: "Helvetica Neue",
+    Arial,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    "BIZ UDPGothic",
+    Meiryo,
+    sans-serif;
+    margin:0;
+    padding:0;
+    text-align:left;
+    font-size: 80px;
+}
+header{
+    background-color: #d1cfcfbd;
+    text-align: center;
+    margin: 0;
+}
+
+h1{
+    margin: 0;
+    height: 300px;
+    line-height: 300px;
+}
+
+.tuto{
+    font-size: 60px;
+    margin: 0;
+    height: 100px;
+    line-height: 100px ;
+}
+
+main{
+    margin: 100px 0 0 0;
+    display: flex;
+    justify-content: center; /*横並びの要素を中央寄せする*/
+    /* justify-content:space-around */
+}
+
+.illust {
+    margin: 100px 200px 100px 200px;
+    cursor: pointer;
+    /* border: 10px dashed gray; */
+    border-radius: 100px;
+    width: 500px;
+    min-width: 500px;
+    height: 200px;
+    font-size: 100px;
+    color: white;
+    font-weight: bold;
+    text-align: center; /*テキストの左右中央ぞろえ*/
+    line-height: 208px; /*テキストの上下中央ぞろえ*/
+    transition: .3s;
+}
+.gu{
+    background-color: #e91717;
+}
+.cho{
+    background-color: gold;
+}
+.pa{
+    background-color: #191970;
+}
+
+.hatena{
+    width: 500px;
+    height: 500px;
+}
+
+footer{
+    background-color: #fff;
+    text-align: center;
+}
+p{
+    font-size:200%;
+    text-align: center;
+    border-bottom:1px solid #fff;
+    height:200px;
+}
+.illust:hover{
+    background: #00ff7f;
+    color:#fff;
+}
+
+.hands{
+    font-size: 30px;
+    margin: 200px 0 0 0;
+}
+
+ul{
+    display: flex;
+    justify-content: center;
+}
+
+li{
+    list-style: none;
+    width: 800px;
+    height: 800px;
+    display:flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.VS{
+    font-size: 100px;
+}
+
+/* .your_hands{
+    width: 500px;
+    height: 500px;
+    
+} */
+
+.judge{
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 100px;
+}
+
+input{
+    width: 1000px;
+    height: 150px;
+    font-size: 80px;
+}
+
+table{
+    margin-top: 200px;
+    margin-bottom: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 2500px;
+    text-align: center;
+    table-layout: fixed;
+    border:1px solid #333;
+
+}
+
+table th{
+    padding: 30px 0px 30px 0px;
+    background:#C0C0C0 ;
+}
+
+table td{
+    padding: 10px 0px 10px 0px;
+}
+
+.reset{
+    background-color: #1a83ec;
+    border: #ccc;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 200px;
+    cursor: pointer;
+    width: 2500px;
+    height: 200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.reset:hover{
+    background-color: #2f4154;
+}
