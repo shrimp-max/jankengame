@@ -50,17 +50,16 @@
         </tr>
         <tr>
             <th>グー</th>
-            <th><span id="">4</span>回</th>
+            <th><span id="guclickcount">4</span>回</th>
         </tr>
         <tr>
             <th>チョキ</th>
-            <th><span id="">4</span>回</th>
+            <th><span id="choclickcount">4</span>回</th>
         </tr>
         <tr>
             <th>パー</th>
-            <th><span id="">4</span>回</th>
+            <th><span id="parclickcount">4</span>回</th>
         </tr>
-    </table>
     
     <table rules="rows">
         <tr>
@@ -68,15 +67,15 @@
         </tr>
         <tr>
             <th>グー</th>
-            <th><span id="">4</span>回</th>
+            <th><span id="pc_guclickcount">4</span>回</th>
         </tr>
         <tr>
             <th>チョキ</th>
-            <th><span id="">4</span>回</th>
+            <th><span id="pc_choclickcount">4</span>回</th>
         </tr>
         <tr>
             <th>パー</th>
-            <th><span id="">4</span>回</th>
+            <th><span id="pc_parclickcount">4</span>回</th>
         </tr>
     </table>
 </div>
@@ -92,13 +91,28 @@ let x = 0;
 let y = 0;
 let z = 0;
 let gamecount = 0;
+let gucount = 4;
+let chocount = 4;
+let parcount = 4;
+let pc_gucount = 4;
+let pc_chocount = 4;
+let pc_parcount = 4;
+let pc_Counts = [1,1,1,1,2,2,2,2,3,3,3,3] 
 
 //PCの手を決める関数
-function judgepchands() {
-    const r = Math.random()*3; //小数点0.000001~0.99999がランダムに出る
-    const n = Math.ceil(r);//繰り上げの関数0.01→1
+function judgepchands(){
+    const r = Math.random()*pc_Counts.length; //ランダムに出る少数に配列の要素数をかける
+    const s = Math.floor(r); //配列の要素番号
+    const n = pc_Counts[s]
+    console.log(r);
+    console.log(s);
+    console.log(n);
+    console.log(pc_hands);
+    pc_Counts.splice(s,1);//pc_Countsから、直前に出した手を削除する
+    console.log(pc_Counts);
     return n;
 }
+
 
 //あなたがボタンを押して画像が表示される関数
 function displayyourhand(yourhands) {
@@ -111,9 +125,6 @@ function displaypchands(pchands, resultText, color){
         $("#pc_hands").html(`<img src="./img/${pchands}.png" width="500" height="500">`); //pchands次第で表示させる画像を変える
         $("#judgment").val(resultText).css("color", color); //判定結果と表示させる色も引数に設定
         gamecount +=1;
-        const percent = Math.ceil((x / gamecount) * 100);
-        $("#winper").html(percent);
-        console.log(percent);
     },1500);
 }
 
@@ -136,22 +147,6 @@ function updateScore(result){
     }
 }
 
-function updateScore(result) {
-    if (result === "draw") {
-        z += 1;
-        $("#drawcount").html(z);
-        console.log(z);
-    } else if (result === "win") {
-        x += 1;
-        $("#wincount").html(x);
-        console.log(x);
-    } else if (result === "lose") {
-        y += 1;
-        $("#losecount").html(y);
-        console.log(y);
-    }
-}
-
 function playJanken(playerHand) {
     displayyourhand(playerHand);
     const num = judgepchands();
@@ -165,217 +160,66 @@ function playJanken(playerHand) {
     const [pchands, resultText, color, result] = results[playerHand][num];
     displaypchands(pchands, resultText, color);
     updateScore(result);
+    pchandscount(num);
+}
+
+function pchandscount(num){
+    if (num == 1){
+        pc_gucount -= 1;
+        console.log(pc_gucount)
+        $("#pc_guclickcount").html(pc_gucount)
+    }
+    if (num == 2){
+        pc_chocount -= 1;
+        console.log(pc_chocount)
+        $("#pc_choclickcount").html(pc_chocount)
+    }
+    if (num == 3){
+        pc_parcount -= 1;
+        console.log(pc_parcount)
+        $("#pc_parclickcount").html(pc_parcount)
+    }
 }
 
 //ボタンを押すことで、displayyourhand関数に引数を渡す
 $("#gu_btn").on("click",function(){
-    playJanken("s003");
+    if (gucount > 0){
+        playJanken("s003");
+        gucount -= 1; //グーを出せる回数をマイナス1する
+        $("#guclickcount").html(gucount);
+    }
+    else {
+        alert("グーはもう出せません。違う手を選んでください");
+    }
 });
 
 $("#cho_btn").on("click",function(){
-    playJanken("s005");
+    if (chocount > 0){
+        playJanken("s005");
+        chocount -= 1;//チョキを出せる回数をマイナス1する
+        $("#choclickcount").html(chocount);
+    }
+    else {
+        alert("チョキはもう出せません。違う手を選んでください");
+    }
+
 });
 
 $("#par_btn").on("click",function(){
-    playJanken("s007");
+    if (parcount > 0){
+        playJanken("s007");
+        parcount -= 1;//パーを出せる回数をマイナス1する
+        $("#parclickcount").html(parcount);
+    }
+    else {
+        alert("パーはもう出せません。違う手を選んでください");
+    }
 });
-
-// //グーを出した場合
-// $("#gu_btn").on("click",function(){
-//     const r = Math.random()*3;//小数点0.000001~0.99999がランダムに出る
-//     const n = Math.ceil(r)//繰り上げの関数0.01→1
-//     console.log(n);
-
-    
-//     $("#your_hands").html('<img src="./img/s003.png" width="500" height="500">');
-//     //$("#pc_hands").html('<img src="./img/s003.png" width="500" height="500">'); グー
-//     //$("#pc_hands").html('<img src="./img/s005.png" width="500" height="500">'); チョキ
-//     //$("#pc_hands").html('<img src="./img/s007.png" width="500" height="500">'); パー
-
-
-//         if(n == 1){
-//             setTimeout(function(){
-//                 $("#pc_hands").html('<img src="./img/s003.png" width="500" height="500">'); //id="echo"の場所に、「大吉」と上書きして！
-//                 $("#judgment").val("あいこ"); //inputタグの中身を変えたい場合は、.htmlではなく、.valを指定する
-//                 $("#judgment").css("color","#000000");
-//                 z +=1;
-//                 gamecount +=1;
-//                 per = (x/gamecount)*100;
-//                 const percent = Math.ceil(per);
-//                 $("#drawcount").html(z);
-//                 console.log(z);
-//                 $("#winper").html(percent);
-//                 console.log(percent);
-//             },1500);
-//             //$("#echo").css("color","#ff0000"); //id="echo"の場所の文字を赤に！
-//             // $("#echo").css("background-color","#000000"); //背景を黒にする
-//             //$("#echo").fadeOut(3000).fadeIn(3000)/fadeOut(3000); //3秒たったら消えてついて消えて
-//         }
-//         if(n == 2){
-//             setTimeout(function(){
-//                 $("#pc_hands").html('<img src="./img/s005.png" width="500" height="500">'); 
-//                 $("#judgment").val("あなたの勝ち");
-//                 $("#judgment").css("color","#ff0000");
-//                 // $("#judgment").css("font-weight","bold");
-//                 x +=1;
-//                 gamecount +=1;
-//                 per = (x/gamecount)*100;
-//                 const percent = Math.ceil(per);
-//                 $("#wincount").html(x);
-//                 console.log(x);
-//                 $("#winper").html(percent);
-//                 console.log(percent);
-//             },1500);
-//             //$("#echo").css("color","#00ff00"); //id="echo"の場所の文字を緑に！
-//         }
-//         if(n == 3){
-//             setTimeout(function(){
-//                 $("#pc_hands").html('<img src="./img/s007.png" width="500" height="500">');
-//                 $("#judgment").val("PCの勝ち");
-//                 $("#judgment").css("color","#0F5474");
-//                 y = y + 1;
-//                 gamecount +=1;
-//                 per = (x/gamecount)*100;
-//                 const percent = Math.ceil(per);
-//                 $("#losecount").html(y);
-//                 console.log(y);
-//                 $("#winper").html(percent);
-//                 console.log(percent);
-//             },1500);
-//             //$("#echo").css("color","#0000ff"); //id="echo"の場所の文字を青に！
-//         }
-// });
-
-// //チョキを出した場合
-// $("#cho_btn").on("click",function(){
-//     const r = Math.random()*3;//小数点0.000001~0.99999がランダムに出る
-//     const n = Math.ceil(r)//繰り上げの関数0.01→1
-//     console.log(n);
-    
-//     $("#your_hands").html('<img src="./img/s005.png" width="500" height="500">')
-
-//     if(n == 1){
-//         setTimeout(function(){
-//             $("#pc_hands").html('<img src="./img/s003.png" width="500" height="500">'); //id="echo"の場所に、「大吉」と上書きして！
-//             $("#judgment").val("PCの勝ち");
-//             $("#judgment").css("color","#0F5474");
-//             y = y + 1;
-//             gamecount +=1;
-//             per = (x/gamecount)*100;
-//             const percent = Math.ceil(per);
-//             $("#losecount").html(y);
-//             console.log(y);
-//             $("#winper").html(percent);
-//             console.log(percent);
-//         },1500);
-//         //$("#echo").css("color","#ff0000"); //id="echo"の場所の文字を赤に！
-//         // $("#echo").css("background-color","#000000"); //背景を黒にする
-//         //$("#echo").fadeOut(3000).fadeIn(3000)/fadeOut(3000); //3秒たったら消えてついて消えて
-//     }
-//     if(n == 2){
-//         setTimeout(function(){
-//             $("#pc_hands").html('<img src="./img/s005.png" width="500" height="500">'); 
-//             $("#judgment").val("あいこ");
-//             $("#judgment").css("color","#000000");
-//             z +=1;
-//             gamecount +=1;
-//             per = (x/gamecount)*100;
-//             const percent = Math.ceil(per);
-//             $("#drawcount").html(z);
-//             console.log(z);
-//             $("#winper").html(percent);
-//             console.log(percent);
-//         },1500);
-//         //$("#echo").css("color","#00ff00"); //id="echo"の場所の文字を緑に！
-//     }
-//     if(n == 3){
-//         setTimeout(function(){
-//             $("#pc_hands").html('<img src="./img/s007.png" width="500" height="500">');
-//             $("#judgment").val("あなたの勝ち");
-//             $("#judgment").css("color","#ff0000");
-//             // $("#judgment").css("font-weight","bold");
-//             x +=1;
-//             gamecount +=1;
-//             per = (x/gamecount)*100;
-//             const percent = Math.ceil(per);
-//             $("#wincount").html(x);
-//             console.log(x);
-//             $("#winper").html(percent);
-//             console.log(percent);
-//         },1500);
-//         //$("#echo").css("color","#0000ff"); //id="echo"の場所の文字を青に！
-//     }
-// });
-//     //パーを出した場合
-// $("#par_btn").on("click",function(){
-//     const r = Math.random()*3;//小数点0.000001~0.99999がランダムに出る
-//     const n = Math.ceil(r)//繰り上げの関数0.01→1
-//     console.log(n);
-
-//     $("#your_hands").html('<img src="./img/s007.png" width="500" height="500">')
-
-//     if(n == 1){
-//         setTimeout(function(){
-//             $("#pc_hands").html('<img src="./img/s003.png" width="500" height="500">'); //id="echo"の場所に、「大吉」と上書きして！
-//             $("#judgment").val("あなたの勝ち");
-//             $("#judgment").css("color","#ff0000");
-//             // $("#judgment").css("font-weight","bold");
-//             x +=1;
-//             gamecount +=1;
-//             per = (x/gamecount)*100;
-//             const percent = Math.ceil(per);
-//             $("#wincount").html(x);
-//             console.log(x);
-//             $("#winper").html(percent);
-//             console.log(percent);
-//         },1500);
-//         //$("#echo").css("color","#ff0000"); //id="echo"の場所の文字を赤に！
-//         // $("#echo").css("background-color","#000000"); //背景を黒にする
-//         //$("#echo").fadeOut(3000).fadeIn(3000)/fadeOut(3000); //3秒たったら消えてついて消えて
-//     }
-//     if(n == 2){
-//         setTimeout(function(){
-//             $("#pc_hands").html('<img src="./img/s005.png" width="500" height="500">'); 
-//             $("#judgment").val("PCの勝ち");
-//             $("#judgment").css("color","#0F5474");
-//             y = y + 1;
-//             gamecount +=1;
-//             per = (x/gamecount)*100;
-//             const percent = Math.ceil(per);
-//             $("#losecount").html(y);
-//             console.log(y);
-//             $("#winper").html(percent);
-//             console.log(percent);
-//         },1500);
-//         //$("#echo").css("color","#00ff00"); //id="echo"の場所の文字を緑に！
-//     }
-//     if(n == 3){
-//         setTimeout(function(){
-//             $("#pc_hands").html('<img src="./img/s007.png" width="500" height="500">');
-//             $("#judgment").val("あいこ");
-//             $("#judgment").css("color","#000000");
-//             z +=1;
-//             gamecount +=1;
-//             per = (x/gamecount)*100;
-//             const percent = Math.ceil(per);
-//             $("#drawcount").html(z);
-//             console.log(z);
-//             $("#winper").html(percent);
-//             console.log(percent);
-//         },1500);
-//         //$("#echo").css("color","#0000ff"); //id="echo"の場所の文字を青に！
-//     }
-// });
-
-
-
 
 //リセットボタン
 $("#reset_btn").on("click",function(){
    location.reload(); //ページ再読み込み
 });
-
-
 
 // 自分の手　１グー　２チョキ　３パー
 //PCの手　　１グー　２チョキ　３パー
